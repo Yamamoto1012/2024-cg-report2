@@ -12,7 +12,7 @@ import Frame from "./components/Frame";
 import { Canvas, extend } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { OrbitControls } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CameraHandler from "./components/CameraHandler";
 import GeoText3d from "./components/GeoText3d";
 
@@ -26,13 +26,6 @@ export default function App() {
   function handleUserInteraction() {
     setUserInteracted(true);
   }
-
-  useEffect(() => {
-    if (blocksDestroyed === totalBlocks) {
-      // すべてのブロックが破壊されたら何かを実行
-      console.log("All blocks destroyed!");
-    }
-  }, [blocksDestroyed]);
 
   return (
     <>
