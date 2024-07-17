@@ -23,7 +23,7 @@ const GeoText3d = () => {
       bevelSize={0.05}
       bevelThickness={0.1}
     >
-      {`You Win!`}
+      {`Clear!`}
       <meshStandardMaterial color="hotpink" />
     </Text3D>
   )
