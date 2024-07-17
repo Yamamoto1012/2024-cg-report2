@@ -12,20 +12,31 @@ import Frame from "./components/Frame";
 import { Canvas, extend } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { OrbitControls } from "@react-three/drei";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CameraHandler from "./components/CameraHandler";
+import GeoText3d from "./components/GeoText3d";
 
 extend({ EffectComposer, RenderPixelatedPass, ShaderPass });
 
 export default function App() {
   const [userInteracted, setUserInteracted] = useState(false);
+  const [blocksDestroyed, setBlockDestroyed] = useState(0);
+  const totalBlocks = 15;
 
   function handleUserInteraction() {
     setUserInteracted(true);
   }
 
+  useEffect(() => {
+    if (blocksDestroyed === totalBlocks) {
+      // すべてのブロックが破壊されたら何かを実行
+      console.log("All blocks destroyed!");
+    }
+  }, [blocksDestroyed]);
+
   return (
     <Canvas
-      camera={{ position: [0, 5, 30], fov: 65 }}
+      camera={{ position: [0, 5, 25], fov: 50 }}
       onPointerDown={handleUserInteraction}
     >
       <ambientLight intensity={5} />
@@ -33,12 +44,16 @@ export default function App() {
       <Physics gravity={[0, -30, 0]} maxSubSteps={10} timeStep={1 / 60}>
         <Ball />
         <Paddle />
-        <Bricks userInteracted={userInteracted} />
+        <Bricks userInteracted={userInteracted} setBlocksDestroyed={setBlockDestroyed} />
         <Frame />
       </Physics>
       <Bg />
       <PostProcessing />
+      <CameraHandler userInteracted={userInteracted} />
       <OrbitControls passive={true} />
+      {blocksDestroyed === totalBlocks && (
+        <GeoText3d />
+      )}
     </Canvas>
   );
 }
