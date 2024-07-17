@@ -35,25 +35,35 @@ export default function App() {
   }, [blocksDestroyed]);
 
   return (
-    <Canvas
-      camera={{ position: [0, 5, 25], fov: 50 }}
-      onPointerDown={handleUserInteraction}
-    >
-      <ambientLight intensity={5} />
-      <pointLight position={[10, 10, 5]} />
-      <Physics gravity={[0, -30, 0]} maxSubSteps={10} timeStep={1 / 60}>
-        <Ball />
-        <Paddle />
-        <Bricks userInteracted={userInteracted} setBlocksDestroyed={setBlockDestroyed} />
-        <Frame />
-      </Physics>
-      <Bg />
-      <PostProcessing />
-      <CameraHandler userInteracted={userInteracted} />
-      <OrbitControls passive={true} />
-      {blocksDestroyed === totalBlocks && (
-        <GeoText3d />
+    <>
+      <Canvas
+        camera={{ position: [0, 5, 25], fov: 50 }}
+        onPointerDown={handleUserInteraction}
+      >
+        <ambientLight intensity={5} />
+        <pointLight position={[10, 10, 5]} />
+        <Physics gravity={[0, -30, 0]} maxSubSteps={10} timeStep={1 / 60}>
+          <Ball />
+          <Paddle />
+          <Bricks
+            userInteracted={userInteracted}
+            setBlocksDestroyed={setBlockDestroyed}
+          />
+          <Frame />
+        </Physics>
+        <Bg />
+        <PostProcessing />
+        <CameraHandler userInteracted={userInteracted} />
+        <OrbitControls passive={true} />
+        {blocksDestroyed === totalBlocks && <GeoText3d />}
+      </Canvas>
+      {!userInteracted && (
+        <div
+          className="announcement"
+        >
+          <p>マウスをクリック</p>
+        </div>
       )}
-    </Canvas>
+    </>
   );
 }
