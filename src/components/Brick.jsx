@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import breakSound from "/break.mp3";
 import { RigidBody } from "@react-three/rapier";
 
-export default function Brick ({ position, color, userInteracted }) {
+export default function Brick({ position, color, userInteracted, onBlockDestroyed }) {
   const ref = useRef();
   const breakSoundRef = useRef();
+  const direction = useRef(Math.random() > 0.5 ? 1 : -1); // ランダムな方向を決定
 
   useEffect(() => {
     breakSoundRef.current = new Audio(breakSound);
@@ -12,11 +14,27 @@ export default function Brick ({ position, color, userInteracted }) {
 
   const onCollisionEnter = () => {
     if (userInteracted) {
-      // ブロックの破壊処理
       ref.current.setTranslation({ x: 1000, y: 1000, z: 1000 });
       breakSoundRef.current.play();
+      onBlockDestroyed();
     }
   };
+
+  useFrame(() => {
+    if (ref.current) {
+      // ブロックを動かすロジック
+      const speed = 0.05;
+      const { x, y, z } = ref.current.translation();
+      ref.current.setTranslation({ x: x + direction.current * speed, y, z });
+
+      // 壁に当たったら方向を変える
+      if (x >= 10 || x <= -10) {
+        direction.current *= -1;
+        // 壁に当たったら少し離れた位置に移動して次のフレームで動きを続ける
+        ref.current.setTranslation({ x: x + direction.current * speed, y, z });
+      }
+    }
+  });
 
   return (
     <RigidBody
@@ -32,4 +50,4 @@ export default function Brick ({ position, color, userInteracted }) {
       </mesh>
     </RigidBody>
   );
-};
+}
