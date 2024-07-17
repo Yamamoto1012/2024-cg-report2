@@ -19,7 +19,7 @@ export default function Bricks({ userInteracted, setBlocksDestroyed }) {
           key={index}
           position={pos}
           userInteracted={userInteracted}
-          color={index % 2 === 0 ? "red" : "blue"}
+          color={index % 2 === 0 ? "#FFF700" : "#00FF38"}
           onBlockDestroyed={handleBlockDestroyed}
         />
       ))}
