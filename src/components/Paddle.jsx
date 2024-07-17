@@ -30,7 +30,7 @@ export default function Paddle({
       restitution={2.1}
     >
       <mesh>
-        <boxGeometry args={[20, 2, 2]} />
+        <boxGeometry args={[15, 2, 2]} />
         <meshStandardMaterial color="lightblue" />
       </mesh>
     </RigidBody>
