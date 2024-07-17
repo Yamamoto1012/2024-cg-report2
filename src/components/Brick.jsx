@@ -1,5 +1,6 @@
+import * as THREE from "three";
 import { useEffect, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import breakSound from "/break.mp3";
 import { RigidBody } from "@react-three/rapier";
 
@@ -7,6 +8,7 @@ export default function Brick({ position, color, userInteracted, onBlockDestroye
   const ref = useRef();
   const breakSoundRef = useRef();
   const direction = useRef(Math.random() > 0.5 ? 1 : -1); // ランダムな方向を決定
+  const texture = useLoader(THREE.TextureLoader, "/pixel.png");
 
   useEffect(() => {
     breakSoundRef.current = new Audio(breakSound);
@@ -46,7 +48,7 @@ export default function Brick({ position, color, userInteracted, onBlockDestroye
     >
       <mesh>
         <boxGeometry args={[2.5, 1, 2]} />
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial map={texture} color={color} />
       </mesh>
     </RigidBody>
   );
